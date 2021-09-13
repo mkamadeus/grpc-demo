@@ -9,6 +9,7 @@ import (
 	"github.com/mkamadeus/grpc-demo/server/schemas"
 	"github.com/mkamadeus/grpc-demo/server/servers"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 const PORT = 1337
@@ -32,6 +33,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	schemas.RegisterWeatherServer(grpcServer, weatherServer)
 	schemas.RegisterStudentServer(grpcServer, studentServer)
+	reflection.Register(grpcServer)
 
 	log.Printf("Serving on port: %d", PORT)
 	if err := grpcServer.Serve(listener); err != nil {
