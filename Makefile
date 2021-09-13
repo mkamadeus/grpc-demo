@@ -1,14 +1,24 @@
-proto:
+proto-weather:
 	protoc --proto_path=./schemas \
-	--go_out=server \
-	--go_opt=Mweather.proto=./schemas \
-	--go-grpc_out=server/schemas \
-	--go-grpc_opt=Mweather.proto=./schemas \
-	schemas/weather.proto
+		--go_out=server \
+		--go_opt=Mweather.proto=./schemas \
+		--go-grpc_out=server/schemas \
+		--go-grpc_opt=Mweather.proto=./schemas \
+		schemas/weather.proto
+
+proto-student:
+	protoc --proto_path=./schemas \
+		--go_out=server \
+		--go_opt=Mstudent.proto=./schemas \
+		--go-grpc_out=server/schemas \
+		--go-grpc_opt=Mstudent.proto=./schemas \
+		schemas/student.proto
 
 	# python -m grpc_tools.protoc \
-	# 	-I ./protobuf \
-	# 	--python_out=. \
-	# 	--python-grpc_out=. \
-	# 	protobuf/weather.proto
-.PHONY: proto
+	# 	-I ./schemas \
+	# 	--python_out=client/schemas \
+	# 	--grpc_python_out=client/schemas \
+	# 	schemas/student.proto
+
+.PHONY: proto-weather
+.PHONY: proto-student

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package schemas;
+
+service Student {
+  rpc GetStudentByNIM (StudentByNIMRequest) returns (StudentResponse);
+  rpc GetStudentsByFaculty (StudentByFacultyRequest) returns (stream StudentResponse);
+}
+
+message StudentByNIMRequest {
+  string nim = 1;
+}
+
+message StudentByFacultyRequest {
+  string nim = 1;
+}
+
+message StudentResponse {
+  string name = 1;
+  string facultyNIM = 2;
+  string majorNIM = 3;
+  string faculty = 4;
+  string major = 5;
+}
