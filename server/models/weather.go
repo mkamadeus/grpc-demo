@@ -1,8 +1,9 @@
 package models
 
-type Weather struct {
-	Location             string
-	Condition            string
-	ActualTemperature    string
-	FeelsLikeTemperature string
+import (
+	"github.com/mkamadeus/grpc-demo/server/schemas"
+)
+
+type WeatherController interface {
+	GetByLocation(location string) (*schemas.WeatherReply, error)
 }

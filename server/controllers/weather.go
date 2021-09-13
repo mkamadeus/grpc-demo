@@ -1,32 +1,29 @@
-package service
+package controllers
 
 import (
 	"errors"
-	"io"
+	"io/ioutil"
 	"net/http"
 	"strings"
 
 	"github.com/mkamadeus/grpc-demo/server/models"
+	"github.com/mkamadeus/grpc-demo/server/schemas"
 )
 
-type weatherService interface {
-	GetByLocation(location string) (*models.Weather, error)
+func NewWeatherController() models.WeatherController {
+	return &WeatherController{}
 }
 
-func New() weatherService {
-	return &WeatherService{}
-}
+type WeatherController struct{}
 
-type WeatherService struct{}
-
-func (service WeatherService) GetByLocation(location string) (*models.Weather, error) {
+func (*WeatherController) GetByLocation(location string) (*schemas.WeatherReply, error) {
 	response, err := http.Get("wttr.in/Jakarta?format=\"%%l_%%C_%%t_%%f\"")
 	if err != nil {
 		return nil, err
 	}
 	defer response.Body.Close()
 
-	body, err := io.ReadAll(response.Body)
+	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +33,7 @@ func (service WeatherService) GetByLocation(location string) (*models.Weather, e
 		return nil, errors.New("invalid weather data")
 	}
 
-	return &models.Weather{
+	return &schemas.WeatherReply{
 		Location:             weatherData[0],
 		Condition:            weatherData[1],
 		ActualTemperature:    weatherData[2],

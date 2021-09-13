@@ -3,7 +3,7 @@ syntax = "proto3";
 package schemas;
 
 service Weather {
-  rpc GetWeatherInformation(WeatherRequest) returns (WeatherRequest) {}
+  rpc GetWeatherInformation(WeatherRequest) returns (WeatherReply) {}
 }
 
 message WeatherRequest {

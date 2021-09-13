@@ -5,7 +5,9 @@ import (
 	"log"
 	"net"
 
-	"github.com/mkamadeus/grpc-demo/server/schemas/"
+	"github.com/mkamadeus/grpc-demo/server/controllers"
+	"github.com/mkamadeus/grpc-demo/server/schemas"
+	"github.com/mkamadeus/grpc-demo/server/servers"
 	"google.golang.org/grpc"
 )
 
@@ -18,12 +20,14 @@ func main() {
 	}
 	defer listener.Close()
 
-	server := &schemas.Server{}
+	weatherCtl := controllers.NewWeatherController()
+	server := &servers.WeatherServer{WeatherCtl: weatherCtl}
 
 	grpcServer := grpc.NewServer()
 	schemas.RegisterWeatherServer(grpcServer, server)
 
-	if err := s.Serve(listener); err != nil {
+	log.Printf("Serving on port: %d", PORT)
+	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 
