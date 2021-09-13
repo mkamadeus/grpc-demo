@@ -21,10 +21,17 @@ func main() {
 	defer listener.Close()
 
 	weatherCtl := controllers.NewWeatherController()
-	server := &servers.WeatherServer{WeatherCtl: weatherCtl}
+	weatherServer := &servers.WeatherServer{WeatherCtl: weatherCtl}
+
+	studentCtl, err := controllers.NewStudentController()
+	if err != nil {
+		log.Fatalf("failed to create student controller: %v", err)
+	}
+	studentServer := &servers.StudentServer{StudentCtl: studentCtl}
 
 	grpcServer := grpc.NewServer()
-	schemas.RegisterWeatherServer(grpcServer, server)
+	schemas.RegisterWeatherServer(grpcServer, weatherServer)
+	schemas.RegisterStudentServer(grpcServer, studentServer)
 
 	log.Printf("Serving on port: %d", PORT)
 	if err := grpcServer.Serve(listener); err != nil {

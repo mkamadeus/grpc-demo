@@ -12,7 +12,7 @@ message StudentByNIMRequest {
 }
 
 message StudentByFacultyRequest {
-  string nim = 1;
+  string faculty = 1;
 }
 
 message StudentResponse {
