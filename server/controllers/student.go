@@ -49,7 +49,7 @@ func (controller *StudentController) GetByNIM(NIM string) (*schemas.StudentRespo
 
 	var studentRes *schemas.StudentResponse
 	for _, student := range students {
-		if student[1] == NIM || student[2] == NIM {
+		if student[1] == NIM || (len(student) == 3 && student[2] == NIM) {
 			studentRes = &schemas.StudentResponse{
 				Name:       student[0],
 				FacultyNIM: student[1],
