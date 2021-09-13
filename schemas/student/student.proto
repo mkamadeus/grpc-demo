@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package student;
+
+import "request.proto";
+import "response.proto";
+
+
+service Student {
+  rpc GetStudentDataByNIM (StudentRequest) returns (StudentResponse);
+  rpc GetFacultyByNIM (StudentRequest) returns (StudentResponse);
+}
+
+message StudentRequest {
+  string nim = 1;
+}
+
+message StudentResponse {
+  string name = 1;
+  string facultyNIM = 2;
+  string majorNIM = 3;
+  string faculty = 4;
+  string major = 5;
+}

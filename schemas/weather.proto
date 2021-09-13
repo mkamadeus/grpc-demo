@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/mkamadeus/grpc-demo/protobuf";
-
-package weather;
+package schemas;
 
 service Weather {
   rpc GetWeatherInformation(WeatherRequest) returns (WeatherRequest) {}

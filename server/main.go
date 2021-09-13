@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	"github.com/mkamadeus/grpc-demo/protobuf"
+	"github.com/mkamadeus/grpc-demo/server/schemas/"
 	"google.golang.org/grpc"
 )
 
@@ -18,8 +18,11 @@ func main() {
 	}
 	defer listener.Close()
 
-	server := grpc.NewServer()
-	protobuf.RegisterWeatherServer(server, &server{})
+	server := &schemas.Server{}
+
+	grpcServer := grpc.NewServer()
+	schemas.RegisterWeatherServer(grpcServer, server)
+
 	if err := s.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
