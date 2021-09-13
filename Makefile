@@ -14,11 +14,11 @@ proto-student:
 		--go-grpc_opt=Mstudent.proto=./schemas \
 		schemas/student.proto
 
-	# python -m grpc_tools.protoc \
-	# 	-I ./schemas \
-	# 	--python_out=client/schemas \
-	# 	--grpc_python_out=client/schemas \
-	# 	schemas/student.proto
+	python -m grpc_tools.protoc \
+		-I ./schemas \
+		--python_out=python-client/schemas \
+		--grpc_python_out=python-client/schemas \
+		./schemas/student.proto
 
 .PHONY: proto-weather
 .PHONY: proto-student
