@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/mkamadeus/grpc-demo/server/models"
 	"github.com/mkamadeus/grpc-demo/server/schemas"
@@ -49,13 +49,21 @@ func (controller *StudentController) GetByNIM(NIM string) (*schemas.StudentRespo
 
 	var studentRes *schemas.StudentResponse
 	for _, student := range students {
-		if student[1] == NIM || (len(student) == 3 && student[2] == NIM) {
+		var majorNIM string
+		if len(student) == 3 {
+			majorNIM = student[2]
+		}
+		if student[1] == NIM || majorNIM == NIM {
+			var major string
+			if majorNIM != "" {
+				major = controller.majorMap[majorNIM[:3]]
+			}
 			studentRes = &schemas.StudentResponse{
 				Name:       student[0],
 				FacultyNIM: student[1],
-				MajorNIM:   student[2],
+				MajorNIM:   majorNIM,
 				Faculty:    controller.facultyMap[student[1][:3]],
-				Major:      controller.majorMap[student[2][:3]],
+				Major:      major,
 			}
 			break
 		}
@@ -64,6 +72,43 @@ func (controller *StudentController) GetByNIM(NIM string) (*schemas.StudentRespo
 	return studentRes, nil
 }
 
-func (controller *StudentController) GetByFaculty(faculty string) ([]*schemas.StudentResponse, error) {
-	return nil, errors.New("Not Implemented yet")
+func (controller *StudentController) GetByFaculty(faculty string, stream schemas.Student_GetStudentsByFacultyServer) (err error) {
+	response, err := http.Get("https://cdn.jsdelivr.net/gh/mkamadeus/nim-finder-v2@main/src/json/data_13_21.json")
+	if err != nil {
+		return
+	}
+	defer response.Body.Close()
+
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return
+	}
+
+	var students [][]string
+	if err = json.Unmarshal(body, &students); err != nil {
+		return
+	}
+
+	for _, student := range students {
+		var majorNIM string
+		if len(student) == 3 {
+			majorNIM = student[2]
+		}
+		if controller.facultyMap[student[1][:3]] == faculty {
+			var major string
+			if majorNIM != "" {
+				major = controller.majorMap[majorNIM[:3]]
+			}
+			stream.Send(&schemas.StudentResponse{
+				Name:       student[0],
+				FacultyNIM: student[1],
+				MajorNIM:   majorNIM,
+				Faculty:    faculty,
+				Major:      major,
+			})
+			time.Sleep(time.Duration(1) * time.Second) // simulate delay
+		}
+	}
+
+	return nil
 }
