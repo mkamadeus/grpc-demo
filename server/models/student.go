@@ -6,5 +6,5 @@ import (
 
 type StudentController interface {
 	GetByNIM(NIM string) (*schemas.StudentResponse, error)
-	GetByFaculty(faculty string) ([]*schemas.StudentResponse, error)
+	GetByFaculty(faculty string, stream schemas.Student_GetStudentsByFacultyServer) error
 }
