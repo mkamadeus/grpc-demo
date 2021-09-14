@@ -16,8 +16,8 @@ proto-student:
 
 	python -m grpc_tools.protoc \
 		-I ./schemas \
-		--python_out=python-client/schemas \
-		--grpc_python_out=python-client/schemas \
+		--python_out=python-client \
+		--grpc_python_out=python-client \
 		./schemas/student.proto
 
 proto: proto-student proto-weather
