@@ -121,7 +121,22 @@ title: gRPC
 Things to consider before adopting gRPC.
 
 ---
-layout: center
+
+# Pros and Cons of gRPC
+
+Taken from https://www.capitalone.com/tech/software-engineering/grpc-framework-for-microservices-communication/
+
+## Pros
+- ☝️ Reduced network latency <br>
+- ✌️ Duplex streaming <br>
+- 👌 Code generation
+## Cons
+- ☝️ Lack of consistent error handling <br>
+- ✌️ Lack of support for additional content types <br>
+- 👌 Most browsers don't support gRPC
+---
+layout: cover
+title: gRPC
 ---
 
 # Demo Time!
