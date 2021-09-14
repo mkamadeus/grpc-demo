@@ -20,5 +20,8 @@ proto-student:
 		--grpc_python_out=python-client/schemas \
 		./schemas/student.proto
 
+proto: proto-student proto-weather
+
 .PHONY: proto-weather
 .PHONY: proto-student
+.PHONY: proto
