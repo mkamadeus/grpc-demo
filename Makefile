@@ -22,6 +22,10 @@ proto-student:
 
 proto: proto-student proto-weather
 
+server:
+	cd server && go run main.go
+
 .PHONY: proto-weather
 .PHONY: proto-student
 .PHONY: proto
+.PHONY: server
