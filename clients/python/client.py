@@ -25,7 +25,7 @@ async def find_faculty(fac) -> None:
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print("Usage: python client.py <NIM>")
+        print("Usage: python client.py <NIM/faculty/major>")
         exit(-1)
 
     logging.basicConfig()
