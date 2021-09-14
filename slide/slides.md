@@ -35,11 +35,13 @@ title: gRPC
 ---
 
 # What is gRPC?
+
 General overview of gRPC.
 
 ---
-layout: quote
----
+
+## layout: quote
+
 <div class="italic text-3xl opacity-70">
   "gRPC is a modern open source high performance Remote Procedure Call (RPC) framework that can run in any environment."
 </div>
@@ -47,6 +49,7 @@ layout: quote
 ---
 
 # What is gRPC?
+
 Taken from https://grpc.io/
 
 Developed by Google in 2015, here's what they aim for in gRPC:
@@ -59,6 +62,7 @@ Developed by Google in 2015, here's what they aim for in gRPC:
 ---
 
 # Where is it used?
+
 Scenarios where gRPC is used, taken from https://grpc.io/
 
 - Interservice communication in a microservices architecture
@@ -77,13 +81,13 @@ Companies that adopts them:
 </div>
 <div class="italic opacity-50 text-sm">...and many more!</div>
 
-
 ---
 layout: cover
 title: gRPC
 ---
 
 # How does gRPC Work?
+
 Using HTTP 2.0 under the hood, let's see how it works.
 
 ---
@@ -103,18 +107,19 @@ Taken from https://grpc.io/docs/what-is-grpc/introduction/
   <div class="w-full"><img src="https://grpc.io/img/landing-2.svg" /></div>
 </div>
 
-
 ---
 layout: cover
 title: gRPC
 ---
 
 # What's Unique About gRPC?
+
 Some notable things that make it unique from others.
 
 ---
 
 # What's Unique About gRPC?
+
 Taken from https://www.altexsoft.com/blog/what-is-grpc/
 
 - **Protocol Buffers** - for defining schema
@@ -126,6 +131,7 @@ title: gRPC
 ---
 
 # Pros and Cons of gRPC
+
 Things to consider before adopting gRPC.
 
 ---
@@ -135,19 +141,24 @@ Things to consider before adopting gRPC.
 Taken from https://www.capitalone.com/tech/software-engineering/grpc-framework-for-microservices-communication/
 
 ## Pros
+
 - ☝️ Reduced network latency <br>
 - ✌️ Duplex streaming <br>
 - 👌 Code generation
+
 ## Cons
+
 - ☝️ Lack of consistent error handling <br>
 - ✌️ Lack of support for additional content types <br>
 - 👌 Most browsers don't support gRPC
+
 ---
 layout: cover
 title: gRPC
 ---
 
 # Demo Time!
+
 First, let's see how it's used in practice.
 
 <div class="abs-br m-6 flex gap-2">
@@ -163,6 +174,7 @@ First, let's see how it's used in practice.
 ---
 
 # Some steps to follow
+
 Quite similar with other RPCs.
 
 1. **Make your service definition** - achieved by using Protobuf to define your methods and service.
@@ -172,6 +184,7 @@ Quite similar with other RPCs.
 ---
 
 # Protobuf Definition Example
+
 Short sample, taken from https://github.com/grpc/grpc-go/blob/master/examples/
 
 ```go {all|1|3-8|10-12|14-20}
@@ -200,6 +213,7 @@ message HelloReply {
 ---
 
 # Generate Stub from Protobuf
+
 Generating Go code, taken from https://github.com/grpc/grpc-go/blob/master/examples/
 
 This command requires `protoc` and `protoc-gen-go` to be installed.
@@ -215,5 +229,54 @@ protoc \
 ```
 
 ---
-layout: end
+
+# Testing the gRPC Server
+
+Here's how to use `evans` (https://github.com/ktr0731/evans)
+
+More options are available on the GitHub (e.g: using TLS, etc.).
+For demonstration purposes, we use:
+
+```bash
+evans -r repl -p 1337
+> service Student
+> call GetStudentByNIM
+```
+
+Or if preferable, use `evans`' CLI by supplying JSON string via `stdin` or file:
+
+```bash
+echo '{"nim": "13518035"}' | \
+evans -r cli -p 1337 call schemas.Student.GetStudentByNIM
+
+# ..or
+evans -r cli -p 1337 --file request.json call schemas.Student.GetStudentByNIM
+```
+
 ---
+
+# Implementing the Service
+Will be explained in more detail in the demo.
+
+## Server-side
+
+```go
+func (server *StudentServer) GetStudentByNIM(ctx context.Context, req *schemas.StudentByNIMRequest) (*schemas.StudentResponse, error) {
+	return server.StudentCtl.GetByNIM(req.GetNim())
+}
+```
+<br/>
+
+## Client-side
+
+```go
+// used later in functions
+c := schemas.NewStudentClient(conn)
+
+func GetByNIM(c schemas.StudentClient, NIM string) {
+	res, err := c.GetStudentByNIM(context.Background(), &schemas.StudentByNIMRequest{
+		Nim: NIM,
+	})
+  // ...
+}
+```

@@ -3,5 +3,8 @@
     "editor.defaultFormatter": null
   },
   "emmet.excludeLanguages": [],
-  "emmet.includeLanguages": { "markdown": "html" }
+  "emmet.includeLanguages": {
+    "markdown": "html"
+  },
+  "prettier.requireConfig": true
 }
