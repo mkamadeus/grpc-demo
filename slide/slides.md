@@ -113,6 +113,14 @@ title: gRPC
 Some notable things that make it unique from others.
 
 ---
+
+# What's Unique About gRPC?
+Taken from https://www.altexsoft.com/blog/what-is-grpc/
+
+- **Protocol Buffers** - for defining schema
+- **HTTP/2** - as the transport protocol
+
+---
 layout: cover
 title: gRPC
 ---
