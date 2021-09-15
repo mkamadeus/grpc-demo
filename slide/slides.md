@@ -39,8 +39,8 @@ title: gRPC
 General overview of gRPC.
 
 ---
-
-## layout: quote
+layout: quote
+---
 
 <div class="italic text-3xl opacity-70">
   "gRPC is a modern open source high performance Remote Procedure Call (RPC) framework that can run in any environment."
